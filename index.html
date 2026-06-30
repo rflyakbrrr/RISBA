@@ -1,1459 +1,1628 @@
-<style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+<!DOCTYPE html>
+<html lang="id">
 
-  :root {
-    --green-dark: #0a5c3a;
-    --green-mid: #0f7a4e;
-    --green-light: #1a9e68;
-    --gold: #c8982a;
-    --gold-light: #e8b84b;
-    --cream: #f9f7f0;
-    --white: #ffffff;
-    --text-main: #1a2e1a;
-    --text-sub: #4a6052;
-    --text-muted: #7a9080;
-    --border-soft: rgba(10, 92, 58, 0.12);
-    --radius-card: 14px;
-  }
-
-  body {
-    background: var(--cream);
-    font-family: 'Segoe UI', sans-serif;
-    color: var(--text-main);
-  }
-
-  .app {
-    max-width: 420px;
-    margin: 0 auto;
-    min-height: 100vh;
-    background: var(--cream);
-  }
-
-  /* ── NAV ── */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 420px;
-    background: var(--white);
-    border-top: 1px solid var(--border-soft);
-    display: flex;
-    z-index: 100;
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
-  }
-
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 4px 8px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 10px;
-    gap: 3px;
-    transition: color 0.2s;
-  }
-
-  .nav-btn.active {
-    color: var(--green-dark);
-  }
-
-  .nav-btn i {
-    font-size: 20px;
-  }
-
-  .nav-btn span {
-    font-weight: 500;
-  }
-
-  /* ── PAGES ── */
-  .page {
-    display: none;
-    padding: 0 0 80px;
-    animation: fadeIn 0.25s ease;
-  }
-
-  .page.active {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a5c3a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>RISBA</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 60%, #1db870 100%);
-    padding: 40px 20px 48px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -30px;
-    right: -30px;
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -20px;
-    left: -20px;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .hero-logo {
-    width: 64px;
-    height: 64px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-    backdrop-filter: blur(8px);
-    border: 1.5px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .hero-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-
-  .hero h1 {
-    color: #fff;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 2px;
-  }
-
-  .hero-sub {
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
-
-  .hero-badge {
-    display: inline-block;
-    background: rgba(200, 152, 42, 0.25);
-    border: 1px solid var(--gold-light);
-    color: var(--gold-light);
-    font-size: 11px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-top: 12px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-date {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 12px;
-    margin-top: 6px;
-  }
-
-  /* ── CLOCK WIDGET ── */
-  .clock-widget {
-    margin: -22px 16px 0;
-    background: var(--white);
-    border-radius: var(--radius-card);
-    padding: 14px 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    position: relative;
-    z-index: 10;
-  }
-
-  .clock-time {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--green-dark);
-    letter-spacing: 1px;
-  }
-
-  .clock-info {
-    flex: 1;
-  }
-
-  .clock-day {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-main);
-  }
-
-  .clock-date-full {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .clock-hijri {
-    font-size: 11px;
-    color: var(--gold);
-    font-weight: 500;
-    margin-top: 2px;
-  }
-
-  .clock-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
+    :root {
+      --green-dark: #0a5c3a;
+      --green-mid: #0f7a4e;
+      --green-light: #1a9e68;
+      --gold: #c8982a;
+      --gold-light: #e8b84b;
+      --cream: #f4f6f4;
+      --white: #ffffff;
+      --text-main: #1a2e1a;
+      --text-sub: #4a6052;
+      --text-muted: #8a9e90;
+      --border: rgba(10, 92, 58, 0.10);
+      --nav-h: 68px;
+      --sb: env(safe-area-inset-bottom, 0px);
+      --st: env(safe-area-inset-top, 0px);
     }
 
-    50% {
-      transform: scale(1.4);
-      opacity: 0.6;
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background: var(--cream);
+      font-family: -apple-system, 'SF Pro Display', 'Segoe UI', sans-serif;
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
     }
-  }
-
-  /* ── SECTION ── */
-  .section {
-    padding: 20px 16px 4px;
-  }
-
-  .section-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--green-dark);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border-soft);
-  }
-
-  /* ── PRAYER CARD ── */
-  .prayer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .prayer-item {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 14px 12px;
-    border: 1px solid var(--border-soft);
-    text-align: center;
-    transition: all 0.2s;
-    cursor: default;
-  }
-
-  .prayer-item.active {
-    background: var(--green-dark);
-    border-color: var(--green-dark);
-  }
-
-  .prayer-item.active .prayer-name {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .prayer-item.active .prayer-time {
-    color: #fff;
-  }
-
-  .prayer-item.active .prayer-icon {
-    color: var(--gold-light);
-  }
-
-  .prayer-name {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-
-  .prayer-time {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--green-dark);
-  }
-
-  .prayer-icon {
-    font-size: 14px;
-    color: var(--green-light);
-    margin-bottom: 6px;
-  }
-
-  .next-prayer-banner {
-    background: linear-gradient(135deg, var(--gold) 0%, #e8b84b 100%);
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .next-prayer-banner i {
-    font-size: 24px;
-    color: var(--white);
-  }
-
-  .next-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-  }
-
-  .next-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .next-countdown {
-    margin-left: auto;
-    text-align: right;
-  }
-
-  .countdown-val {
-    font-size: 18px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .countdown-lbl {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.75);
-  }
-
-  /* ── NGAJI SCHEDULE ── */
-  .ngaji-card {
-    background: var(--white);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border-soft);
-    overflow: hidden;
-    margin-bottom: 10px;
-  }
-
-  .ngaji-header {
-    background: var(--green-dark);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .ngaji-header i {
-    color: var(--gold-light);
-    font-size: 18px;
-  }
-
-  .ngaji-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .ngaji-day {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .ngaji-body {
-    padding: 14px 16px;
-  }
-
-  .ngaji-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-soft);
-  }
-
-  .ngaji-row:last-child {
-    border-bottom: none;
-  }
-
-  .ngaji-badge {
-    background: var(--cream);
-    color: var(--green-dark);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 8px;
-    min-width: 68px;
-    text-align: center;
-    border: 1px solid var(--border-soft);
-  }
-
-  .ngaji-info {
-    flex: 1;
-  }
-
-  .ngaji-materi {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-main);
-  }
-
-  .ngaji-ustadz {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .ngaji-loc {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-    color: var(--green-light);
-    margin-top: 2px;
-  }
-
-  /* ── PROFILE PAGE ── */
-  .org-banner {
-    background: linear-gradient(160deg, var(--green-dark), var(--green-mid));
-    padding: 32px 20px 40px;
-    text-align: center;
-  }
-
-  .org-banner h2 {
-    color: #fff;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 1px;
-  }
-
-  .org-banner p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 12px;
-    margin-top: 6px;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
-  }
-
-  .org-period {
-    display: inline-block;
-    background: var(--gold);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-top: 12px;
-  }
-
-  .visi-misi {
-    margin: -20px 16px 0;
-    background: var(--white);
-    border-radius: var(--radius-card);
-    padding: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-    position: relative;
-    z-index: 5;
-  }
-
-  .vm-tab {
-    display: flex;
-    background: var(--cream);
-    border-radius: 10px;
-    padding: 3px;
-    margin-bottom: 16px;
-  }
-
-  .vm-tab-btn {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    background: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .vm-tab-btn.active {
-    background: var(--white);
-    color: var(--green-dark);
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-
-  .vm-content {
-    display: none;
-  }
-
-  .vm-content.active {
-    display: block;
-  }
-
-  .vm-item {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: flex-start;
-  }
-
-  .vm-num {
-    width: 24px;
-    height: 24px;
-    background: var(--green-dark);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .vm-text {
-    font-size: 13px;
-    color: var(--text-sub);
-    line-height: 1.6;
-  }
-
-  /* ── PENGURUS ── */
-  .pengurus-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .pengurus-card {
-    background: var(--white);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border-soft);
-    padding: 16px 12px;
-    text-align: center;
-  }
-
-  .pengurus-avatar {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    margin: 0 auto 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  .pengurus-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-
-  .pengurus-jabatan {
-    font-size: 11px;
-    color: var(--gold);
-    font-weight: 600;
-    margin-top: 3px;
-  }
-
-  .pengurus-divisi {
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-
-  .ketua-card {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    text-align: left;
-  }
-
-  .ketua-card .pengurus-avatar {
-    width: 64px;
-    height: 64px;
-    font-size: 24px;
-    flex-shrink: 0;
-  }
-
-  .ketua-card .pengurus-name {
-    font-size: 16px;
-  }
-
-  /* ── LOKASI PAGE ── */
-  .map-placeholder {
-    margin: 0 16px;
-    background: linear-gradient(160deg, #1a3d2b 0%, #0f5c3a 100%);
-    border-radius: var(--radius-card);
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: 1px solid var(--border-soft);
-    cursor: pointer;
-  }
-
-  .map-placeholder i {
-    font-size: 40px;
-    color: var(--gold-light);
-  }
-
-  .map-placeholder span {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-  }
-
-  .map-placeholder small {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
-  }
-
-  .info-card {
-    background: var(--white);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border-soft);
-    padding: 16px;
-    margin: 10px 16px;
-  }
-
-  .info-row {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border-soft);
-  }
-
-  .info-row:last-child {
-    border-bottom: none;
-  }
-
-  .info-icon {
-    width: 36px;
-    height: 36px;
-    background: var(--cream);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .info-icon i {
-    font-size: 18px;
-    color: var(--green-dark);
-  }
-
-  .info-label {
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-
-  .info-val {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-main);
-    margin-top: 2px;
-  }
-
-  .btn-maps {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--green-dark);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    width: calc(100% - 32px);
-    margin: 0 16px;
-  }
-
-  .btn-maps i {
-    font-size: 18px;
-  }
-
-  /* ── AGENDA ── */
-  .agenda-item {
-    background: var(--white);
-    border-radius: var(--radius-card);
-    border: 1px solid var(--border-soft);
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-
-  .agenda-date {
-    background: var(--green-dark);
-    color: #fff;
-    border-radius: 10px;
-    padding: 8px 10px;
-    text-align: center;
-    min-width: 44px;
-    flex-shrink: 0;
-  }
-
-  .agenda-day {
-    font-size: 18px;
-    font-weight: 800;
-  }
-
-  .agenda-month {
-    font-size: 10px;
-    font-weight: 500;
-    opacity: 0.8;
-  }
-
-  .agenda-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-
-  .agenda-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 3px;
-    line-height: 1.5;
-  }
-
-  .agenda-tag {
-    display: inline-block;
-    background: var(--cream);
-    color: var(--green-dark);
-    font-size: 10px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin-top: 6px;
-    border: 1px solid var(--border-soft);
-  }
-</style>
-
-<div class="app">
-
-  <!-- ═══════ PAGE: BERANDA ═══════ -->
-  <div class="page active" id="page-home">
-    <div class="hero">
-      <div class="hero-logo">
-        <img src="image/risba.jpeg" alt="Logo">
-      </div>
-      <h1>RISBA</h1>
-      <div class="hero-sub">Remaja Islam Baiturrahim</div>
-      <div class="hero-badge">Masjid Jami' Baiturrahim</div>
-      <div class="hero-date" id="hero-date">—</div>
-    </div>
-
-    <div class="clock-widget">
-      <div>
-        <div class="clock-time" id="clock-time">00:00</div>
-        <div class="clock-day" id="clock-day">—</div>
-        <div class="clock-date-full" id="clock-date-full">—</div>
-        <div class="clock-hijri" id="clock-hijri">—</div>
-      </div>
-      <div style="margin-left:auto; display:flex; flex-direction:column; align-items:center; gap:4px;">
-        <div class="clock-dot"></div>
-        <span style="font-size:9px; color:var(--text-muted);">Live</span>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title"><i class="ti ti-clock" style="font-size:14px;" aria-hidden="true"></i> Waktu Sholat
-        Hari Ini</div>
-
-      <div class="next-prayer-banner" id="next-banner">
-        <i class="ti ti-bell-ringing" aria-hidden="true"></i>
-        <div>
-          <div class="next-label">Sholat Berikutnya</div>
-          <div class="next-name" id="next-name">—</div>
+
+    .app {
+      width: 100%;
+      min-height: 100dvh;
+      position: relative;
+    }
+
+    /* ── PAGES ── */
+    .page {
+      display: none;
+      width: 100%;
+      padding-bottom: calc(var(--nav-h) + var(--sb) + 10px);
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeUp 0.2s ease both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ══ BOTTOM NAV ══ */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: var(--white);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: stretch;
+      z-index: 999;
+      padding-bottom: var(--sb);
+      box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.10);
+    }
+
+    .nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: var(--nav-h);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      transition: color 0.15s;
+    }
+
+    .nav-item.active {
+      color: var(--green-dark);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 3px;
+      background: var(--green-dark);
+      border-radius: 0 0 6px 6px;
+    }
+
+    .nav-icon {
+      font-size: 24px;
+      line-height: 1;
+      transition: transform 0.15s;
+    }
+
+    .nav-item.active .nav-icon {
+      transform: translateY(-2px);
+    }
+
+    .nav-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      background: linear-gradient(155deg, #063326 0%, var(--green-dark) 40%, var(--green-mid) 75%, #17b366 100%);
+      padding: calc(var(--st) + 44px) 20px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 220px;
+      height: 220px;
+      top: -60px;
+      right: -50px;
+    }
+
+    .hero::after {
+      width: 160px;
+      height: 160px;
+      bottom: -40px;
+      left: -30px;
+    }
+
+    .hero-logo-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      overflow: hidden;
+    }
+
+    .hero-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-logo-fallback {
+      font-size: 36px;
+      color: rgba(255, 255, 255, 0.9);
+      display: none;
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: 4px;
+    }
+
+    .hero-sub {
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(200, 152, 42, 0.22);
+      border: 1px solid rgba(232, 184, 75, 0.45);
+      color: var(--gold-light);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-top: 12px;
+    }
+
+    .hero-date {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    /* ══ CLOCK CARD ══ */
+    .clock-card {
+      margin: -26px 16px 0;
+      background: var(--white);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .clock-time {
+      font-size: 34px;
+      font-weight: 800;
+      color: var(--green-dark);
+      letter-spacing: 1px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .clock-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .clock-day {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .clock-full {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .clock-hijri {
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+      animation: ripple 1.8s infinite;
+    }
+
+    @keyframes ripple {
+      0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+
+    /* ══ SECTION ══ */
+    .section {
+      padding: 22px 16px 0;
+    }
+
+    .sec-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .sec-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ══ NEXT BANNER ══ */
+    .next-banner {
+      background: linear-gradient(135deg, #a8720e 0%, var(--gold-light) 100%);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .next-icon {
+      font-size: 28px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .next-label-text {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 500;
+    }
+
+    .next-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .next-time-box {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .next-countdown-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .next-countdown-lbl {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* ══ PRAYER GRID ══ */
+    .prayer-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .prayer-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px 6px;
+      border: 1.5px solid var(--border);
+      text-align: center;
+    }
+
+    .prayer-card.active {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+    }
+
+    .p-icon {
+      font-size: 18px;
+      color: var(--green-light);
+      margin-bottom: 6px;
+    }
+
+    .prayer-card.active .p-icon {
+      color: var(--gold-light);
+    }
+
+    .p-name {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .prayer-card.active .p-name {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .p-time {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--green-dark);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .prayer-card.active .p-time {
+      color: #fff;
+    }
+
+    /* ══ NGAJI CARD ══ */
+    .ngaji-card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .ngaji-head {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ngaji-head i {
+      font-size: 20px;
+      color: var(--gold-light);
+    }
+
+    .ngaji-head-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .ngaji-head-sub {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.62);
+      margin-top: 1px;
+    }
+
+    .ngaji-body {
+      padding: 4px 0;
+    }
+
+    .ngaji-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ngaji-row:last-child {
+      border-bottom: none;
+    }
+
+    .ngaji-badge {
+      background: var(--cream);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 10px;
+      min-width: 76px;
+      text-align: center;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .ngaji-materi {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .ngaji-ustadz {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .ngaji-loc {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--green-light);
+      margin-top: 3px;
+    }
+
+    /* ══ PAGE BANNER ══ */
+    .page-banner {
+      background: linear-gradient(155deg, #063326, var(--green-dark), var(--green-mid));
+      padding: calc(var(--st) + 40px) 20px 48px;
+      text-align: center;
+    }
+
+    .page-banner h2 {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .page-banner p {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    /* ══ SHOLAT CARD ══ */
+    .sholat-card {
+      margin: -22px 16px 0;
+      background: var(--white);
+      border-radius: 18px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.10);
+      overflow: hidden;
+      position: relative;
+      z-index: 5;
+    }
+
+    .sholat-head {
+      background: var(--green-dark);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sholat-head i {
+      color: var(--gold-light);
+      font-size: 22px;
+    }
+
+    .sh-hari {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sh-tanggal {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 2px;
+    }
+
+    .sh-loc {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .sh-city {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .sh-tz {
+      font-size: 10px;
+      color: var(--gold-light);
+    }
+
+    .plr-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 18px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .plr-row:last-child {
+      border-bottom: none;
+    }
+
+    .plr-row.active-row {
+      background: rgba(10, 92, 58, 0.05);
+    }
+
+    .plr-icon {
+      font-size: 22px;
+      color: var(--text-muted);
+    }
+
+    .plr-row.active-row .plr-icon {
+      color: var(--green-dark);
+    }
+
+    .plr-name {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .plr-row.active-row .plr-name {
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    .plr-badge {
+      background: var(--green-dark);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .plr-time {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .plr-row.active-row .plr-time {
+      color: var(--green-dark);
+    }
+
+    /* ══ PROFIL ══ */
+    .org-banner {
+      background: linear-gradient(155deg, #063326, var(--green-dark), var(--green-mid));
+      padding: calc(var(--st) + 40px) 20px 56px;
+      text-align: center;
+    }
+
+    .org-banner h2 {
+      color: #fff;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .org-banner .sub {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .org-banner p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      margin-top: 10px;
+      line-height: 1.7;
+    }
+
+    .org-period {
+      display: inline-block;
+      background: var(--gold);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-top: 14px;
+    }
+
+    .vm-box {
+      margin: -24px 16px 0;
+      background: var(--white);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.09);
+      position: relative;
+      z-index: 5;
+    }
+
+    .vm-tabs {
+      display: flex;
+      background: var(--cream);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 3px;
+      margin-bottom: 18px;
+    }
+
+    .vm-tab {
+      flex: 1;
+      padding: 10px 6px;
+      border: none;
+      background: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .vm-tab.active {
+      background: var(--white);
+      color: var(--green-dark);
+      font-weight: 700;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .vm-panel {
+      display: none;
+    }
+
+    .vm-panel.active {
+      display: block;
+    }
+
+    .vm-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+
+    .vm-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green-dark);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .vm-text {
+      font-size: 14px;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    .pengurus-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .pengurus-card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 18px 14px;
+      text-align: center;
+    }
+
+    .pengurus-card.ketua {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-align: left;
+      padding: 20px 18px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      flex-shrink: 0;
+      margin: 0 auto 12px;
+    }
+
+    .pengurus-card.ketua .avatar {
+      width: 70px;
+      height: 70px;
+      font-size: 22px;
+      margin: 0;
+    }
+
+    .p-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .p-jabatan {
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 3px;
+    }
+
+    .p-divisi {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pengurus-card.ketua .p-name {
+      font-size: 17px;
+    }
+
+    .pengurus-card.ketua .p-jabatan {
+      font-size: 14px;
+    }
+
+    .divisi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .divisi-item {
+      background: var(--white);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 16px 14px;
+    }
+
+    .divisi-item i {
+      font-size: 24px;
+      color: var(--green-dark);
+    }
+
+    .divisi-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-top: 8px;
+    }
+
+    .divisi-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    /* ══ AGENDA ══ */
+    .agenda-list {
+      padding: 0 16px;
+    }
+
+    .agenda-item {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .agenda-date {
+      background: var(--green-dark);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      min-width: 50px;
+      flex-shrink: 0;
+    }
+
+    .agenda-day {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .agenda-month {
+      font-size: 11px;
+      font-weight: 600;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .agenda-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .agenda-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.55;
+    }
+
+    .agenda-tag {
+      display: inline-block;
+      background: var(--cream);
+      color: var(--green-dark);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-top: 8px;
+      border: 1px solid var(--border);
+    }
+
+    /* ══ LOKASI ══ */
+    .map-embed {
+      margin: 14px 16px 10px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .map-embed iframe {
+      display: block;
+      width: 100%;
+      height: 230px;
+      border: 0;
+    }
+
+    .info-card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin: 0 16px 14px;
+      overflow: hidden;
+    }
+
+    .info-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 15px 18px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-icon-box {
+      width: 40px;
+      height: 40px;
+      background: var(--cream);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .info-icon-box i {
+      font-size: 20px;
+      color: var(--green-dark);
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .info-val {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 2px;
+    }
+
+    .btn-maps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 17px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: calc(100% - 32px);
+      margin: 0 16px 16px;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s;
+    }
+
+    .btn-maps:active {
+      opacity: 0.85;
+    }
+
+    .btn-maps i {
+      font-size: 22px;
+    }
+
+    .fasilitas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .fasilitas-item {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fasilitas-item i {
+      font-size: 20px;
+      color: var(--green-dark);
+    }
+
+    .fasilitas-item span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- BERANDA -->
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-logo-wrap">
+          <img src="image/risba.jpeg" alt="Logo RISBA"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span class="hero-logo-fallback"><i class="ti ti-building-mosque"></i></span>
         </div>
-        <div class="next-countdown">
-          <div class="countdown-val" id="next-countdown">—</div>
-          <div class="countdown-lbl">lagi</div>
-        </div>
+        <h1>RISBA</h1>
+        <div class="hero-sub">Remaja Islam Baiturrahim</div>
+        <div class="hero-chip"><i class="ti ti-map-pin" style="font-size:13px;"></i> Masjid Jami' Baiturrahim</div>
+        <div class="hero-date" id="hero-date"></div>
       </div>
 
-      <div class="prayer-grid" id="prayer-grid"></div>
-    </div>
+      <div class="clock-card">
+        <div class="clock-meta">
+          <div class="clock-time" id="clock-time">00:00:00</div>
+          <div class="clock-day" id="clock-day">—</div>
+          <div class="clock-full" id="clock-full">—</div>
+          <div class="clock-hijri" id="clock-hijri">—</div>
+        </div>
+        <div class="live-dot"></div>
+      </div>
 
-    <div class="section">
-      <div class="section-title"><i class="ti ti-book" style="font-size:14px;" aria-hidden="true"></i> Jadwal Ngaji
-        Rutin</div>
-      <div class="ngaji-card">
-        <div class="ngaji-header">
-          <i class="ti ti-calendar-week" aria-hidden="true"></i>
+      <div class="section">
+        <div class="sec-title"><i class="ti ti-clock" style="font-size:15px;"></i> Waktu Sholat Hari Ini</div>
+        <div class="next-banner">
+          <i class="ti ti-bell-ringing next-icon"></i>
           <div>
-            <div class="ngaji-title">Pengajian Mingguan</div>
-            <div class="ngaji-day">Setiap Ahad Pagi & Kamis Malam</div>
+            <div class="next-label-text">Sholat Berikutnya</div>
+            <div class="next-name" id="next-name">—</div>
+          </div>
+          <div class="next-time-box">
+            <div class="next-countdown-val" id="next-countdown">—</div>
+            <div class="next-countdown-lbl">lagi</div>
           </div>
         </div>
-        <div class="ngaji-body">
-          <div class="ngaji-row">
-            <div class="ngaji-badge">Ahad 07:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Tafsir Al-Quran</div>
-              <div class="ngaji-ustadz">Ust. Ahmad Fauzan</div>
-              <div class="ngaji-loc"><i class="ti ti-map-pin" aria-hidden="true"></i> Aula Utama Masjid</div>
+        <div class="prayer-grid" id="prayer-grid"></div>
+      </div>
+
+      <div class="section" style="margin-bottom:18px;">
+        <div class="sec-title"><i class="ti ti-book" style="font-size:15px;"></i> Jadwal Ngaji Rutin</div>
+        <div class="ngaji-card">
+          <div class="ngaji-head" style="background:var(--green-dark);">
+            <i class="ti ti-calendar-week"></i>
+            <div>
+              <div class="ngaji-head-title">Pengajian Mingguan</div>
+              <div class="ngaji-head-sub">Ahad · Kamis · Sabtu</div>
             </div>
           </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">Kamis 19:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Fiqih Ibadah</div>
-              <div class="ngaji-ustadz">Ust. Muhamad Rizal</div>
-              <div class="ngaji-loc"><i class="ti ti-map-pin" aria-hidden="true"></i> Ruang Serbaguna</div>
+          <div class="ngaji-body">
+            <div class="ngaji-row">
+              <div class="ngaji-badge">Ahad 07:30</div>
+              <div>
+                <div class="ngaji-materi">Tafsir Al-Quran</div>
+                <div class="ngaji-ustadz">Ust. Ahmad Fauzan</div>
+                <div class="ngaji-loc"><i class="ti ti-map-pin"></i> Aula Utama</div>
+              </div>
             </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">Sabtu 16:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Tahsin & Tahfidz</div>
-              <div class="ngaji-ustadz">Ust. Hasan Bisri</div>
-              <div class="ngaji-loc"><i class="ti ti-map-pin" aria-hidden="true"></i> Serambi Masjid</div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">Kamis 19:30</div>
+              <div>
+                <div class="ngaji-materi">Fiqih Ibadah</div>
+                <div class="ngaji-ustadz">Ust. Muhamad Rizal</div>
+                <div class="ngaji-loc"><i class="ti ti-map-pin"></i> Ruang Serbaguna</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">Sabtu 16:00</div>
+              <div>
+                <div class="ngaji-materi">Tahsin & Tahfidz</div>
+                <div class="ngaji-ustadz">Ust. Hasan Bisri</div>
+                <div class="ngaji-loc"><i class="ti ti-map-pin"></i> Serambi Masjid</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- SHOLAT -->
+    <div class="page" id="page-sholat">
+      <div class="page-banner">
+        <h2>Jadwal Sholat</h2>
+        <p>Masjid Jami' Baiturrahim · Jakarta</p>
+      </div>
+      <div class="sholat-card">
+        <div class="sholat-head">
+          <i class="ti ti-sun"></i>
+          <div>
+            <div class="sh-hari" id="sholat-hari">—</div>
+            <div class="sh-tanggal" id="sholat-tanggal">—</div>
+          </div>
+          <div class="sh-loc">
+            <div class="sh-city">Jakarta, ID</div>
+            <div class="sh-tz">WIB (UTC+7)</div>
+          </div>
+        </div>
+        <div id="full-prayer-list"></div>
+      </div>
+
+      <div class="section" style="margin-top:22px; margin-bottom:16px;">
+        <div class="sec-title"><i class="ti ti-book-2" style="font-size:15px;"></i> Jadwal Ngaji Lengkap</div>
+        <div class="ngaji-card">
+          <div class="ngaji-head" style="background:#0a5c3a;"><i class="ti ti-calendar"></i>
+            <div>
+              <div class="ngaji-head-title">Ahad Pagi</div>
+              <div class="ngaji-head-sub">Mulai 07:00 WIB</div>
+            </div>
+          </div>
+          <div class="ngaji-body">
+            <div class="ngaji-row">
+              <div class="ngaji-badge">07:00</div>
+              <div>
+                <div class="ngaji-materi">Sholat Dhuha Berjamaah</div>
+                <div class="ngaji-ustadz">Imam Masjid</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">07:30</div>
+              <div>
+                <div class="ngaji-materi">Tafsir Al-Quran Juz 30</div>
+                <div class="ngaji-ustadz">Ust. Ahmad Fauzan, S.Ag</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">09:00</div>
+              <div>
+                <div class="ngaji-materi">Kajian Sirah Nabawiyah</div>
+                <div class="ngaji-ustadz">Ust. Abdullah Zain</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ngaji-card">
+          <div class="ngaji-head" style="background:#084d30;"><i class="ti ti-moon"></i>
+            <div>
+              <div class="ngaji-head-title">Kamis Malam</div>
+              <div class="ngaji-head-sub">Ba'da Isya</div>
+            </div>
+          </div>
+          <div class="ngaji-body">
+            <div class="ngaji-row">
+              <div class="ngaji-badge">19:30</div>
+              <div>
+                <div class="ngaji-materi">Fiqih Ibadah Sehari-hari</div>
+                <div class="ngaji-ustadz">Ust. Muhamad Rizal, Lc</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">20:30</div>
+              <div>
+                <div class="ngaji-materi">Sholawat & Maulid</div>
+                <div class="ngaji-ustadz">Grup Hadrah RISBA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ngaji-card">
+          <div class="ngaji-head" style="background:#063d26;"><i class="ti ti-star"></i>
+            <div>
+              <div class="ngaji-head-title">Sabtu Sore</div>
+              <div class="ngaji-head-sub">Ba'da Ashar</div>
+            </div>
+          </div>
+          <div class="ngaji-body">
+            <div class="ngaji-row">
+              <div class="ngaji-badge">16:00</div>
+              <div>
+                <div class="ngaji-materi">Tahsin Al-Quran</div>
+                <div class="ngaji-ustadz">Ust. Hasan Bisri, S.Pd.I</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">17:00</div>
+              <div>
+                <div class="ngaji-materi">Hafalan Juz 'Amma</div>
+                <div class="ngaji-ustadz">Ust. Hasan Bisri, S.Pd.I</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ngaji-card">
+          <div class="ngaji-head" style="background:#3a6b0e;"><i class="ti ti-users"></i>
+            <div>
+              <div class="ngaji-head-title">Rutin RISBA</div>
+              <div class="ngaji-head-sub">Khusus Remaja</div>
+            </div>
+          </div>
+          <div class="ngaji-body">
+            <div class="ngaji-row">
+              <div class="ngaji-badge">Jum'at 13:30</div>
+              <div>
+                <div class="ngaji-materi">Kajian Remaja Islam</div>
+                <div class="ngaji-ustadz">Ust. Fawaz (Ketua RISBA)</div>
+              </div>
+            </div>
+            <div class="ngaji-row">
+              <div class="ngaji-badge">Ahad 10:00</div>
+              <div>
+                <div class="ngaji-materi">Rapat & Diskusi Islami</div>
+                <div class="ngaji-ustadz">BPH RISBA 2026-2029</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFIL -->
+    <div class="page" id="page-profil">
+      <div class="org-banner">
+        <h2>RISBA</h2>
+        <div class="sub">Remaja Islam Baiturrahim</div>
+        <p>Organisasi kepemudaan Islam yang bernaung di bawah Masjid Jami' Baiturrahim, membina generasi muda beriman,
+          berilmu, dan berakhlakul karimah.</p>
+        <div class="org-period">Periode 2026 – 2029</div>
+      </div>
+
+      <div class="vm-box">
+        <div class="vm-tabs">
+          <button class="vm-tab active" onclick="switchVM('visi',this)">Visi</button>
+          <button class="vm-tab" onclick="switchVM('misi',this)">Misi</button>
+          <button class="vm-tab" onclick="switchVM('nilai',this)">Nilai</button>
+        </div>
+        <div class="vm-panel active" id="vm-visi">
+          <div class="vm-item">
+            <div class="vm-num"><i class="ti ti-eye" style="font-size:13px;"></i></div>
+            <div class="vm-text">Mewujudkan generasi muda Islam yang beriman, bertakwa, cerdas, dan berakhlak mulia di
+              lingkungan Masjid Jami' Baiturrahim.</div>
+          </div>
+        </div>
+        <div class="vm-panel" id="vm-misi">
+          <div class="vm-item">
+            <div class="vm-num">1</div>
+            <div class="vm-text">Menyelenggarakan kegiatan pengajian dan pendidikan Islam secara rutin dan terstruktur.
+            </div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num">2</div>
+            <div class="vm-text">Membina akhlak dan karakter remaja melalui program mentoring dan kegiatan sosial
+              keislaman.</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num">3</div>
+            <div class="vm-text">Mengembangkan potensi remaja dalam bidang dakwah, seni, dan kepemimpinan Islami.</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num">4</div>
+            <div class="vm-text">Mempererat ukhuwah Islamiyah antar sesama remaja dan warga sekitar masjid.</div>
+          </div>
+        </div>
+        <div class="vm-panel" id="vm-nilai">
+          <div class="vm-item">
+            <div class="vm-num"><i class="ti ti-heart" style="font-size:13px;"></i></div>
+            <div class="vm-text"><b>Ikhlas</b> — Setiap amal dilakukan semata-mata karena Allah SWT.</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num"><i class="ti ti-shield" style="font-size:13px;"></i></div>
+            <div class="vm-text"><b>Amanah</b> — Menjaga kepercayaan dalam setiap tanggung jawab.</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num"><i class="ti ti-users" style="font-size:13px;"></i></div>
+            <div class="vm-text"><b>Ukhuwah</b> — Membangun persaudaraan yang erat antar sesama Muslim.</div>
+          </div>
+          <div class="vm-item">
+            <div class="vm-num"><i class="ti ti-bulb" style="font-size:13px;"></i></div>
+            <div class="vm-text"><b>Ilmu</b> — Terus belajar dan mengkaji ilmu agama maupun dunia.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:22px;">
+        <div class="sec-title"><i class="ti ti-crown" style="font-size:15px;"></i> Badan Pengurus Harian</div>
+        <div class="pengurus-grid">
+          <div class="pengurus-card ketua">
+            <div class="avatar" style="background:linear-gradient(135deg,#0a5c3a,#1a9e68);">FW</div>
+            <div>
+              <div class="p-name">Fawaz</div>
+              <div class="p-jabatan">Ketua</div>
+              <div class="p-divisi">BPH RISBA 2026-2029</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5;">Memimpin &
+                mengkoordinasi seluruh kegiatan RISBA</div>
+            </div>
+          </div>
+          <div class="pengurus-card">
+            <div class="avatar" style="background:linear-gradient(135deg,#0f7a4e,#22c55e);">ROM</div>
+            <div class="p-name">Romi</div>
+            <div class="p-jabatan">Wakil Ketua</div>
+            <div class="p-divisi">Koordinator Program</div>
+          </div>
+          <div class="pengurus-card">
+            <div class="avatar" style="background:linear-gradient(135deg,#854d0e,#c8982a);">SYR</div>
+            <div class="p-name">Syarmila</div>
+            <div class="p-jabatan">Sekretaris</div>
+            <div class="p-divisi">Administrasi & Arsip</div>
+          </div>
+          <div class="pengurus-card">
+            <div class="avatar" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6);font-size:13px;">ADC</div>
+            <div class="p-name">Adinda A. Camila</div>
+            <div class="p-jabatan">Bendahara</div>
+            <div class="p-divisi">Keuangan & Kas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section" style="margin-top:22px; margin-bottom:16px;">
+        <div class="sec-title"><i class="ti ti-layout-grid" style="font-size:15px;"></i> Divisi Kegiatan</div>
+        <div class="divisi-grid">
+          <div class="divisi-item"><i class="ti ti-book"></i>
+            <div class="divisi-name">Divisi Dakwah</div>
+            <div class="divisi-desc">Kajian, ceramah & tabligh akbar</div>
+          </div>
+          <div class="divisi-item"><i class="ti ti-music"></i>
+            <div class="divisi-name">Divisi Seni</div>
+            <div class="divisi-desc">Hadrah, nasyid & rebana</div>
+          </div>
+          <div class="divisi-item"><i class="ti ti-heart-handshake"></i>
+            <div class="divisi-name">Divisi Sosial</div>
+            <div class="divisi-desc">Santunan & gotong royong</div>
+          </div>
+          <div class="divisi-item"><i class="ti ti-device-mobile"></i>
+            <div class="divisi-name">Divisi Media</div>
+            <div class="divisi-desc">Konten sosial media RISBA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div class="page" id="page-agenda">
+      <div class="page-banner">
+        <h2>Agenda Kegiatan</h2>
+        <p>Program & Event RISBA 2026</p>
+      </div>
+      <div class="agenda-list" style="margin-top:18px;">
+        <div class="agenda-item" style="box-shadow:0 2px 16px rgba(0,0,0,0.07);">
+          <div class="agenda-date" style="background:var(--green-dark);">
+            <div class="agenda-day">05</div>
+            <div class="agenda-month">Jul</div>
+          </div>
+          <div>
+            <div class="agenda-title">Pelantikan BPH RISBA 2026-2029</div>
+            <div class="agenda-desc">Acara resmi pelantikan Badan Pengurus Harian periode baru yang dilantik oleh
+              pengurus masjid.</div>
+            <div class="agenda-tag">Seremonial</div>
+          </div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-date" style="background:var(--gold);">
+            <div class="agenda-day">12</div>
+            <div class="agenda-month">Jul</div>
+          </div>
+          <div>
+            <div class="agenda-title">Kajian Ramadhan Preparation</div>
+            <div class="agenda-desc">Persiapan menyambut Ramadhan dengan kajian keutamaan puasa & amalan malam.</div>
+            <div class="agenda-tag">Kajian</div>
+          </div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-date">
+            <div class="agenda-day">19</div>
+            <div class="agenda-month">Jul</div>
+          </div>
+          <div>
+            <div class="agenda-title">Lomba Tahfidz Remaja</div>
+            <div class="agenda-desc">Kompetisi hafalan Al-Quran untuk remaja usia 13–25 tahun di lingkungan masjid.
+            </div>
+            <div class="agenda-tag">Perlombaan</div>
+          </div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-date">
+            <div class="agenda-day">26</div>
+            <div class="agenda-month">Jul</div>
+          </div>
+          <div>
+            <div class="agenda-title">Santunan Anak Yatim</div>
+            <div class="agenda-desc">Program sosial rutin RISBA memberikan santunan kepada anak-anak yatim sekitar
+              masjid.</div>
+            <div class="agenda-tag">Sosial</div>
+          </div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-date">
+            <div class="agenda-day">03</div>
+            <div class="agenda-month">Ags</div>
+          </div>
+          <div>
+            <div class="agenda-title">Pentas Seni Islami</div>
+            <div class="agenda-desc">Pertunjukan hadrah, nasyid, dan puisi Islami oleh anggota RISBA.</div>
+            <div class="agenda-tag">Seni & Budaya</div>
+          </div>
+        </div>
+        <div class="agenda-item">
+          <div class="agenda-date">
+            <div class="agenda-day">10</div>
+            <div class="agenda-month">Ags</div>
+          </div>
+          <div>
+            <div class="agenda-title">Khataman Al-Quran Bersama</div>
+            <div class="agenda-desc">Kegiatan khataman 30 juz secara bersama-sama seluruh jama'ah masjid.</div>
+            <div class="agenda-tag">Ibadah</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOKASI -->
+    <div class="page" id="page-lokasi">
+      <div class="page-banner">
+        <h2>Lokasi Masjid</h2>
+        <p>Masjid Jami' Baiturrahim</p>
+      </div>
+      <div class="map-embed">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63469.89417175024!2d106.60721698056182!3d-6.148372800000009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f89ad5f764df%3A0x6c1c9405f2ffc846!2sMasjid%20Jami%27%20Baiturrahim!5e0!3m2!1sid!2sid!4v1782764639535!5m2!1sid!2sid"
+          loading="lazy" allowfullscreen></iframe>
+      </div>
+      <div class="info-card">
+        <div class="info-row">
+          <div class="info-icon-box"><i class="ti ti-building-mosque"></i></div>
+          <div>
+            <div class="info-label">Nama Masjid</div>
+            <div class="info-val">Masjid Jami' Baiturrahim</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon-box"><i class="ti ti-map-pin"></i></div>
+          <div>
+            <div class="info-label">Alamat</div>
+            <div class="info-val">Jl Kh Kuding Rt03/Rw06, Kota Tangerang</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon-box"><i class="ti ti-clock"></i></div>
+          <div>
+            <div class="info-label">Jam Operasional</div>
+            <div class="info-val">04:00 – 22:00 WIB (Setiap Hari)</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon-box"><i class="ti ti-phone"></i></div>
+          <div>
+            <div class="info-label">Kontak Masjid</div>
+            <div class="info-val">+62 21 xxxx-xxxx</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon-box"><i class="ti ti-users"></i></div>
+          <div>
+            <div class="info-label">Kontak RISBA</div>
+            <div class="info-val">+62 8xx-xxxx-xxxx (Fawaz)</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-maps" onclick="window.open('https://maps.app.goo.gl/m4sf43JFKfCm56NU7','_blank')">
+        <i class="ti ti-navigation"></i> Navigasi ke Masjid
+      </button>
+      <div class="section">
+        <div class="sec-title"><i class="ti ti-info-circle" style="font-size:15px;"></i> Fasilitas Masjid</div>
+        <div class="fasilitas-grid">
+          <div class="fasilitas-item"><i class="ti ti-droplet"></i><span>Tempat Wudhu</span></div>
+          <div class="fasilitas-item"><i class="ti ti-school"></i><span>Ruang TPA</span></div>
+          <div class="fasilitas-item"><i class="ti ti-car"></i><span>Parkir Luas</span></div>
+          <div class="fasilitas-item"><i class="ti ti-wifi"></i><span>WiFi Gratis</span></div>
+          <div class="fasilitas-item"><i class="ti ti-book"></i><span>Perpustakaan</span></div>
+          <div class="fasilitas-item"><i class="ti ti-presentation"></i><span>Aula Serbaguna</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <nav class="nav-bar">
+      <button class="nav-item active" onclick="goPage('home',this)">
+        <i class="ti ti-home-2 nav-icon"></i><span class="nav-label">Beranda</span>
+      </button>
+      <button class="nav-item" onclick="goPage('sholat',this)">
+        <i class="ti ti-clock nav-icon"></i><span class="nav-label">Sholat</span>
+      </button>
+      <button class="nav-item" onclick="goPage('profil',this)">
+        <i class="ti ti-users nav-icon"></i><span class="nav-label">Profil</span>
+      </button>
+      <button class="nav-item" onclick="goPage('agenda',this)">
+        <i class="ti ti-calendar-event nav-icon"></i><span class="nav-label">Agenda</span>
+      </button>
+      <button class="nav-item" onclick="goPage('lokasi',this)">
+        <i class="ti ti-map-pin nav-icon"></i><span class="nav-label">Lokasi</span>
+      </button>
+    </nav>
   </div>
 
-  <!-- ═══════ PAGE: WAKTU SHOLAT ═══════ -->
-  <div class="page" id="page-sholat">
-    <div class="org-banner" style="padding:28px 20px 36px;">
-      <h2 style="font-size:18px; letter-spacing:0;">Jadwal Sholat & Ngaji</h2>
-      <p style="font-size:12px; margin-top:6px;">Masjid Jami' Baiturrahim · Jakarta</p>
-    </div>
+  <script>
+    const PRAYERS = [
+      { name: 'Subuh', icon: 'ti-sun-low', h: 4, m: 35 },
+      { name: 'Dzuhur', icon: 'ti-sun', h: 12, m: 5 },
+      { name: 'Ashar', icon: 'ti-sun-wind', h: 15, m: 20 },
+      { name: 'Maghrib', icon: 'ti-sunset', h: 17, m: 55 },
+      { name: 'Isya', icon: 'ti-moon', h: 19, m: 10 },
+    ];
+    const DAYS = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    const MONS = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const HM = ["Muharram", "Safar", "Rabi'ul Awwal", "Rabi'ul Akhir", "Jumadil Awwal", "Jumadil Akhir", "Rajab", "Sya'ban", "Ramadhan", "Syawal", "Dzulqa'dah", "Dzulhijjah"];
 
-    <div style="margin: -18px 16px 0; position:relative; z-index:5;">
-      <div
-        style="background:var(--white); border-radius:var(--radius-card); box-shadow:0 4px 16px rgba(0,0,0,0.08); overflow:hidden;">
-        <div style="background:var(--green-dark); padding:14px 16px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-sun" style="color:var(--gold-light); font-size:20px;" aria-hidden="true"></i>
-          <div>
-            <div style="font-size:14px; font-weight:700; color:#fff;" id="sholat-hari">—</div>
-            <div style="font-size:11px; color:rgba(255,255,255,0.65);" id="sholat-tanggal">—</div>
-          </div>
-          <div style="margin-left:auto; text-align:right;">
-            <div style="font-size:11px; color:rgba(255,255,255,0.65);">Jakarta, ID</div>
-            <div style="font-size:10px; color:var(--gold-light);">WIB (UTC+7)</div>
-          </div>
-        </div>
-        <div id="full-prayer-list" style="padding:8px 0;"></div>
-      </div>
-    </div>
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function fmt(h, m) { return pad(h) + ':' + pad(m); }
+    function toMin(h, m) { return h * 60 + m; }
 
-    <div class="section" style="margin-top:16px;">
-      <div class="section-title"><i class="ti ti-book-2" style="font-size:14px;" aria-hidden="true"></i> Jadwal Lengkap
-        Ngaji</div>
+    function getHijri(d) {
+      const jd = Math.floor(d.getTime() / 86400000 + 2440587.5);
+      let l = jd - 1948440 + 10632;
+      const n = Math.floor((l - 1) / 10631);
+      l = l - 10631 * n + 354;
+      const j = Math.floor((10985 - l) / 5316) * Math.floor(50 * l / 17719) + Math.floor(l / 5670) * Math.floor(43 * l / 15238);
+      l = l - Math.floor((30 - j) / 15) * Math.floor(17719 * j / 50) - Math.floor(j / 16) * Math.floor(15238 * j / 43) + 29;
+      const mo = Math.floor(24 * l / 709);
+      return { d: l - Math.floor(709 * mo / 24), m: mo - 1, y: 30 * n + j - 30 };
+    }
 
-      <div class="ngaji-card">
-        <div class="ngaji-header" style="background:#0a5c3a;">
-          <i class="ti ti-calendar" aria-hidden="true"></i>
-          <div>
-            <div class="ngaji-title">Ahad</div>
-            <div class="ngaji-day">Pagi Hari</div>
-          </div>
-        </div>
-        <div class="ngaji-body">
-          <div class="ngaji-row">
-            <div class="ngaji-badge">07:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Sholat Dhuha Berjamaah</div>
-              <div class="ngaji-ustadz">Imam Masjid</div>
-            </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">07:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Tafsir Al-Quran Juz 30</div>
-              <div class="ngaji-ustadz">Ust. Ahmad Fauzan, S.Ag</div>
-            </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">09:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Kajian Sirah Nabawiyah</div>
-              <div class="ngaji-ustadz">Ust. Abdullah Zain</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    function tick() {
+      const now = new Date();
+      const h = now.getHours(), mi = now.getMinutes(), s = now.getSeconds();
+      const nowMin = toMin(h, mi);
+      const hj = getHijri(now);
 
-      <div class="ngaji-card">
-        <div class="ngaji-header" style="background:#084d30;">
-          <i class="ti ti-moon" aria-hidden="true"></i>
-          <div>
-            <div class="ngaji-title">Kamis Malam</div>
-            <div class="ngaji-day">Ba'da Isya</div>
-          </div>
-        </div>
-        <div class="ngaji-body">
-          <div class="ngaji-row">
-            <div class="ngaji-badge">19:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Fiqih Ibadah Sehari-hari</div>
-              <div class="ngaji-ustadz">Ust. Muhamad Rizal, Lc</div>
-            </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">20:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Baca Sholawat & Maulid</div>
-              <div class="ngaji-ustadz">Grup Hadrah RISBA</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      document.getElementById('clock-time').textContent = pad(h) + ':' + pad(mi) + ':' + pad(s);
+      document.getElementById('clock-day').textContent = DAYS[now.getDay()];
+      document.getElementById('clock-full').textContent = now.getDate() + ' ' + MONS[now.getMonth()] + ' ' + now.getFullYear();
+      document.getElementById('clock-hijri').textContent = hj.d + ' ' + HM[hj.m] + ' ' + hj.y + ' H';
+      document.getElementById('hero-date').textContent = DAYS[now.getDay()] + ', ' + now.getDate() + ' ' + MONS[now.getMonth()] + ' ' + now.getFullYear();
+      document.getElementById('sholat-hari').textContent = DAYS[now.getDay()];
+      document.getElementById('sholat-tanggal').textContent = now.getDate() + ' ' + MONS[now.getMonth()] + ' ' + now.getFullYear() + ' / ' + hj.d + ' ' + HM[hj.m] + ' ' + hj.y + ' H';
 
-      <div class="ngaji-card">
-        <div class="ngaji-header" style="background:#063d26;">
-          <i class="ti ti-star" aria-hidden="true"></i>
-          <div>
-            <div class="ngaji-title">Sabtu Sore</div>
-            <div class="ngaji-day">Ba'da Ashar</div>
-          </div>
-        </div>
-        <div class="ngaji-body">
-          <div class="ngaji-row">
-            <div class="ngaji-badge">16:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Tahsin Al-Quran</div>
-              <div class="ngaji-ustadz">Ust. Hasan Bisri, S.Pd.I</div>
-            </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">17:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Hafalan Juz 'Amma</div>
-              <div class="ngaji-ustadz">Ust. Hasan Bisri, S.Pd.I</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      let nextIdx = -1, minDiff = Infinity;
+      PRAYERS.forEach((p, i) => { const diff = toMin(p.h, p.m) - nowMin; if (diff > 0 && diff < minDiff) { minDiff = diff; nextIdx = i; } });
+      if (nextIdx === -1) { nextIdx = 0; minDiff = toMin(PRAYERS[0].h, PRAYERS[0].m) + (1440 - nowMin); }
 
-      <div class="ngaji-card">
-        <div class="ngaji-header" style="background:#3a6b0e;">
-          <i class="ti ti-users" aria-hidden="true"></i>
-          <div>
-            <div class="ngaji-title">Rutin RISBA</div>
-            <div class="ngaji-day">Khusus Remaja</div>
-          </div>
-        </div>
-        <div class="ngaji-body">
-          <div class="ngaji-row">
-            <div class="ngaji-badge">Jum'at 13:30</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Kajian Remaja Islam</div>
-              <div class="ngaji-ustadz">Ust. Fawaz (Ketua RISBA)</div>
-            </div>
-          </div>
-          <div class="ngaji-row">
-            <div class="ngaji-badge">Ahad 10:00</div>
-            <div class="ngaji-info">
-              <div class="ngaji-materi">Rapat & Diskusi Islami</div>
-              <div class="ngaji-ustadz">BPH RISBA 2026-2029</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      document.getElementById('prayer-grid').innerHTML = PRAYERS.map((p, i) => {
+        const a = i === nextIdx;
+        return `<div class="prayer-card${a ? ' active' : ''}">
+      <div class="p-icon"><i class="ti ${p.icon}"></i></div>
+      <div class="p-name">${p.name}</div>
+      <div class="p-time">${fmt(p.h, p.m)}</div>
+    </div>`;
+      }).join('');
 
-  <!-- ═══════ PAGE: PROFIL ═══════ -->
-  <div class="page" id="page-profil">
-    <div class="org-banner">
-      <h2>RISBA</h2>
-      <div style="color:rgba(255,255,255,0.8); font-size:13px; margin-top:4px;">Remaja Islam Baiturrahim</div>
-      <p>Organisasi kepemudaan Islam yang bernaung di bawah Masjid Jami' Baiturrahim, membina generasi muda beriman,
-        berilmu, dan berakhlakul karimah.</p>
-      <div class="org-period">Periode 2026 – 2029</div>
-    </div>
+      document.getElementById('full-prayer-list').innerHTML = PRAYERS.map((p, i) => {
+        const a = i === nextIdx;
+        return `<div class="plr-row${a ? ' active-row' : ''}">
+      <i class="ti ${p.icon} plr-icon"></i>
+      <div class="plr-name">${p.name}</div>
+      ${a ? '<span class="plr-badge">Berikutnya</span>' : ''}
+      <div class="plr-time">${fmt(p.h, p.m)}</div>
+    </div>`;
+      }).join('');
 
-    <div class="visi-misi">
-      <div class="vm-tab">
-        <button class="vm-tab-btn active" onclick="switchVM('visi')">Visi</button>
-        <button class="vm-tab-btn" onclick="switchVM('misi')">Misi</button>
-        <button class="vm-tab-btn" onclick="switchVM('nilai')">Nilai</button>
-      </div>
-      <div class="vm-content active" id="vm-visi">
-        <div class="vm-item">
-          <div class="vm-num"><i class="ti ti-eye" style="font-size:12px;" aria-hidden="true"></i></div>
-          <div class="vm-text">Mewujudkan generasi muda Islam yang beriman, bertakwa, cerdas, dan berakhlak mulia di
-            lingkungan Masjid Jami' Baiturrahim.</div>
-        </div>
-      </div>
-      <div class="vm-content" id="vm-misi">
-        <div class="vm-item">
-          <div class="vm-num">1</div>
-          <div class="vm-text">Menyelenggarakan kegiatan pengajian dan pendidikan Islam secara rutin dan terstruktur.
-          </div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num">2</div>
-          <div class="vm-text">Membina akhlak dan karakter remaja melalui program mentoring dan kegiatan sosial
-            keislaman.</div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num">3</div>
-          <div class="vm-text">Mengembangkan potensi remaja dalam bidang dakwah, seni, dan kepemimpinan Islami.</div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num">4</div>
-          <div class="vm-text">Mempererat ukhuwah Islamiyah antar sesama remaja dan warga sekitar masjid.</div>
-        </div>
-      </div>
-      <div class="vm-content" id="vm-nilai">
-        <div class="vm-item">
-          <div class="vm-num"><i class="ti ti-heart" style="font-size:12px;" aria-hidden="true"></i></div>
-          <div class="vm-text"><b>Ikhlas</b> — Setiap amal dilakukan semata-mata karena Allah SWT.</div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num"><i class="ti ti-shield" style="font-size:12px;" aria-hidden="true"></i></div>
-          <div class="vm-text"><b>Amanah</b> — Menjaga kepercayaan dalam setiap tanggung jawab yang diemban.</div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num"><i class="ti ti-users" style="font-size:12px;" aria-hidden="true"></i></div>
-          <div class="vm-text"><b>Ukhuwah</b> — Membangun persaudaraan yang erat antar sesama Muslim.</div>
-        </div>
-        <div class="vm-item">
-          <div class="vm-num"><i class="ti ti-bulb" style="font-size:12px;" aria-hidden="true"></i></div>
-          <div class="vm-text"><b>Ilmu</b> — Terus belajar dan mengkaji ilmu agama maupun ilmu dunia.</div>
-        </div>
-      </div>
-    </div>
+      document.getElementById('next-name').textContent = PRAYERS[nextIdx].name;
+      const hrs = Math.floor(minDiff / 60), mins = minDiff % 60;
+      document.getElementById('next-countdown').textContent = hrs > 0 ? hrs + 'j ' + mins + 'm' : mins + ' mnt';
+    }
 
-    <div class="section" style="margin-top:16px;">
-      <div class="section-title"><i class="ti ti-crown" style="font-size:14px;" aria-hidden="true"></i> Badan Pengurus
-        Harian</div>
+    function goPage(id, btn) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('page-' + id).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
 
-      <div class="pengurus-grid">
-        <div class="pengurus-card ketua-card">
-          <div class="pengurus-avatar" style="background:linear-gradient(135deg,#0a5c3a,#1a9e68);">FW</div>
-          <div>
-            <div class="pengurus-name">Fawaz</div>
-            <div class="pengurus-jabatan">Ketua</div>
-            <div class="pengurus-divisi">BPH RISBA 2026-2029</div>
-            <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Memimpin & mengkoordinasi seluruh
-              kegiatan RISBA</div>
-          </div>
-        </div>
-        <div class="pengurus-card">
-          <div class="pengurus-avatar" style="background:linear-gradient(135deg,#0f7a4e,#22c55e); font-size:16px;">ROM
-          </div>
-          <div class="pengurus-name">Romi</div>
-          <div class="pengurus-jabatan">Wakil Ketua</div>
-          <div class="pengurus-divisi">Koordinator Program</div>
-        </div>
-        <div class="pengurus-card">
-          <div class="pengurus-avatar" style="background:linear-gradient(135deg,#854d0e,#c8982a); font-size:16px;">SYR
-          </div>
-          <div class="pengurus-name">Syarmila</div>
-          <div class="pengurus-jabatan">Sekretaris</div>
-          <div class="pengurus-divisi">Administrasi & Arsip</div>
-        </div>
-        <div class="pengurus-card">
-          <div class="pengurus-avatar" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6); font-size:14px;">ADC
-          </div>
-          <div class="pengurus-name">Adinda Azkiya Camila</div>
-          <div class="pengurus-jabatan">Bendahara</div>
-          <div class="pengurus-divisi">Keuangan & Kas</div>
-        </div>
-      </div>
-    </div>
+    function switchVM(tab, btn) {
+      document.querySelectorAll('.vm-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.vm-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('vm-' + tab).classList.add('active');
+      btn.classList.add('active');
+    }
 
-    <div class="section">
-      <div class="section-title"><i class="ti ti-layout-grid" style="font-size:14px;" aria-hidden="true"></i> Divisi
-        Kegiatan</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
-        <div style="background:var(--white); border-radius:12px; border:1px solid var(--border-soft); padding:14px;">
-          <i class="ti ti-book" style="color:var(--green-dark); font-size:20px;" aria-hidden="true"></i>
-          <div style="font-size:13px; font-weight:700; color:var(--text-main); margin-top:8px;">Divisi Dakwah</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Kajian, ceramah, & tabligh akbar</div>
-        </div>
-        <div style="background:var(--white); border-radius:12px; border:1px solid var(--border-soft); padding:14px;">
-          <i class="ti ti-music" style="color:var(--green-dark); font-size:20px;" aria-hidden="true"></i>
-          <div style="font-size:13px; font-weight:700; color:var(--text-main); margin-top:8px;">Divisi Seni</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Hadrah, nasyid, & rebana</div>
-        </div>
-        <div style="background:var(--white); border-radius:12px; border:1px solid var(--border-soft); padding:14px;">
-          <i class="ti ti-heart-handshake" style="color:var(--green-dark); font-size:20px;" aria-hidden="true"></i>
-          <div style="font-size:13px; font-weight:700; color:var(--text-main); margin-top:8px;">Divisi Sosial</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Santunan, gotong royong</div>
-        </div>
-        <div style="background:var(--white); border-radius:12px; border:1px solid var(--border-soft); padding:14px;">
-          <i class="ti ti-device-mobile" style="color:var(--green-dark); font-size:20px;" aria-hidden="true"></i>
-          <div style="font-size:13px; font-weight:700; color:var(--text-main); margin-top:8px;">Divisi Media</div>
-          <div style="font-size:11px; color:var(--text-muted); margin-top:4px;">Konten sosial media RISBA</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
 
-  <!-- ═══════ PAGE: AGENDA ═══════ -->
-  <div class="page" id="page-agenda">
-    <div class="org-banner" style="padding:28px 20px 36px;">
-      <h2 style="font-size:18px;">Agenda Kegiatan</h2>
-      <p style="font-size:12px; margin-top:6px;">Program & Event RISBA 2026</p>
-    </div>
-    <div style="margin:-18px 16px 0; position:relative; z-index:5; padding-bottom:16px;">
-      <div class="agenda-item" style="border:1px solid var(--border-soft); box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-        <div class="agenda-date" style="background:var(--green-dark);">
-          <div class="agenda-day">05</div>
-          <div class="agenda-month">Jul</div>
-        </div>
-        <div>
-          <div class="agenda-title">Pelantikan BPH RISBA 2026-2029</div>
-          <div class="agenda-desc">Acara resmi pelantikan Badan Pengurus Harian periode baru yang dilantik oleh pengurus
-            masjid.</div>
-          <div class="agenda-tag">Seremonial</div>
-        </div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-date" style="background:var(--gold);">
-          <div class="agenda-day">12</div>
-          <div class="agenda-month">Jul</div>
-        </div>
-        <div>
-          <div class="agenda-title">Kajian Ramadhan Preparation</div>
-          <div class="agenda-desc">Persiapan menyambut Ramadhan dengan kajian keutamaan puasa & amalan malam.</div>
-          <div class="agenda-tag">Kajian</div>
-        </div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-date">
-          <div class="agenda-day">19</div>
-          <div class="agenda-month">Jul</div>
-        </div>
-        <div>
-          <div class="agenda-title">Lomba Tahfidz Remaja</div>
-          <div class="agenda-desc">Kompetisi hafalan Al-Quran untuk remaja usia 13-25 tahun di lingkungan masjid.</div>
-          <div class="agenda-tag">Perlombaan</div>
-        </div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-date">
-          <div class="agenda-day">26</div>
-          <div class="agenda-month">Jul</div>
-        </div>
-        <div>
-          <div class="agenda-title">Santunan Anak Yatim</div>
-          <div class="agenda-desc">Program sosial rutin RISBA memberikan santunan kepada anak-anak yatim sekitar masjid.
-          </div>
-          <div class="agenda-tag">Sosial</div>
-        </div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-date">
-          <div class="agenda-day">03</div>
-          <div class="agenda-month">Ags</div>
-        </div>
-        <div>
-          <div class="agenda-title">Pentas Seni Islami</div>
-          <div class="agenda-desc">Pertunjukan hadrah, nasyid, dan pembacaan puisi Islami oleh anggota RISBA.</div>
-          <div class="agenda-tag">Seni & Budaya</div>
-        </div>
-      </div>
-      <div class="agenda-item">
-        <div class="agenda-date">
-          <div class="agenda-day">10</div>
-          <div class="agenda-month">Ags</div>
-        </div>
-        <div>
-          <div class="agenda-title">Khataman Al-Quran Bersama</div>
-          <div class="agenda-desc">Kegiatan khataman 30 juz secara bersama-sama seluruh jama'ah masjid.</div>
-          <div class="agenda-tag">Ibadah</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════ PAGE: LOKASI ═══════ -->
-  <div class="page" id="page-lokasi">
-    <div class="org-banner" style="padding:28px 20px 36px;">
-      <h2 style="font-size:18px;">Lokasi Masjid</h2>
-      <p style="font-size:12px; margin-top:6px;">Masjid Jami' Baiturrahim</p>
-    </div>
-
-    <div style="
-    width:100%;
-    display:flex;
-    justify-content:center;
-    margin:16px 0 8px 0;
-">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63469.89417175024!2d106.60721698056182!3d-6.148372800000009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f89ad5f764df%3A0x6c1c9405f2ffc846!2sMasjid%20Jami%27%20Baiturrahim!5e0!3m2!1sid!2sid!4v1782764639535!5m2!1sid!2sid"
-        style="
-            width:calc(100% - 32px);
-            max-width:388px;
-            height:240px;
-            border:0;
-            border-radius:14px;
-            box-shadow:0 4px 12px rgba(0,0,0,.12);
-        " loading="lazy" allowfullscreen>
-      </iframe>
-    </div>
-
-
-    <div class="info-card" style="margin-top:6px;">
-      <div class="info-row">
-        <div class="info-icon"><i class="ti ti-building-mosque" aria-hidden="true"></i></div>
-        <div>
-          <div class="info-label">Nama Masjid</div>
-          <div class="info-val">Masjid Jami' Baiturrahim</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
-        <div>
-          <div class="info-label">Alamat</div>
-          <div class="info-val">Jl Kh Kuding Rt03/Rw06, Kota Tangerang</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
-        <div>
-          <div class="info-label">Jam Operasional</div>
-          <div class="info-val">04:00 – 22:00 WIB (Setiap Hari)</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="ti ti-phone" aria-hidden="true"></i></div>
-        <div>
-          <div class="info-label">Kontak Masjid</div>
-          <div class="info-val">+62 21 xxxx-xxxx</div>
-        </div>
-      </div>
-      <div class="info-row">
-        <div class="info-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
-        <div>
-          <div class="info-label">Kontak RISBA</div>
-          <div class="info-val">+62 8xx-xxxx-xxxx (Fawaz)</div>
-        </div>
-      </div>
-    </div>
-
-    <button class="btn-maps" onclick="openMaps()">
-      <i class="ti ti-navigation" aria-hidden="true"></i>
-      Navigasi ke Masjid
-    </button>
-
-    <div class="section" style="margin-top:8px;">
-      <div class="section-title"><i class="ti ti-info-circle" style="font-size:14px;" aria-hidden="true"></i> Fasilitas
-        Masjid</div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px;">
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-droplet" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">Tempat Wudhu</span>
-        </div>
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-school" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">Ruang TPA</span>
-        </div>
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-car" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">Parkir Luas</span>
-        </div>
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-wifi" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">WiFi Gratis</span>
-        </div>
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-book" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">Perpustakaan</span>
-        </div>
-        <div
-          style="background:var(--white); border-radius:10px; border:1px solid var(--border-soft); padding:12px; display:flex; align-items:center; gap:10px;">
-          <i class="ti ti-presentation" style="color:var(--green-dark);" aria-hidden="true"></i>
-          <span style="font-size:12px; font-weight:500;">Aula Serbaguna</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══════ BOTTOM NAV ═══════ -->
-  <nav class="bottom-nav" aria-label="Navigasi utama">
-    <button class="nav-btn active" onclick="goPage('home',this)" aria-label="Beranda">
-      <i class="ti ti-home" aria-hidden="true"></i><span>Beranda</span>
-    </button>
-    <button class="nav-btn" onclick="goPage('sholat',this)" aria-label="Waktu Sholat">
-      <i class="ti ti-clock" aria-hidden="true"></i><span>Sholat</span>
-    </button>
-    <button class="nav-btn" onclick="goPage('profil',this)" aria-label="Profil">
-      <i class="ti ti-users" aria-hidden="true"></i><span>Profil</span>
-    </button>
-    <button class="nav-btn" onclick="goPage('agenda',this)" aria-label="Agenda">
-      <i class="ti ti-calendar" aria-hidden="true"></i><span>Agenda</span>
-    </button>
-    <button class="nav-btn" onclick="goPage('lokasi',this)" aria-label="Lokasi">
-      <i class="ti ti-map-pin" aria-hidden="true"></i><span>Lokasi</span>
-    </button>
-  </nav>
-
-</div>
-
-<script>
-  const PRAYERS = [
-    { name: 'Subuh', key: 'fajr', icon: 'ti-sun-low', h: 4, m: 35 },
-    { name: 'Dzuhur', key: 'dhuhr', icon: 'ti-sun', h: 12, m: 5 },
-    { name: 'Ashar', key: 'asr', icon: 'ti-sun-wind', h: 15, m: 20 },
-    { name: 'Maghrib', key: 'maghrib', icon: 'ti-sunset', h: 17, m: 55 },
-    { name: 'Isya', key: 'isha', icon: 'ti-moon', h: 19, m: 10 },
-  ];
-
-  const DAYS_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-  const MONTHS_ID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-  const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
-  const HIJRI_MONTHS = ['Muharram', 'Safar', 'Rabi\'ul Awwal', 'Rabi\'ul Akhir', 'Jumadil Awwal', 'Jumadil Akhir', 'Rajab', 'Sya\'ban', 'Ramadhan', 'Syawal', 'Dzulqa\'dah', 'Dzulhijjah'];
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function fmt(h, m) { return pad(h) + ':' + pad(m); }
-  function toMins(h, m) { return h * 60 + m; }
-
-  function getHijri(date) {
-    const jd = Math.floor((date.getTime() / 86400000) + 2440587.5);
-    let l = jd - 1948440 + 10632;
-    const n = Math.floor((l - 1) / 10631);
-    l = l - 10631 * n + 354;
-    const j = Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) + Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
-    l = l - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
-    const month = Math.floor((24 * l) / 709);
-    const day = l - Math.floor((709 * month) / 24);
-    const year = 30 * n + j - 30;
-    return { d: day, m: month - 1, y: year };
-  }
-
-  function updateClock() {
-    const now = new Date();
-    const h = now.getHours(), mi = now.getMinutes(), s = now.getSeconds();
-    const nowMins = toMins(h, mi);
-
-    document.getElementById('clock-time').textContent = pad(h) + ':' + pad(mi) + ':' + pad(s);
-    document.getElementById('clock-day').textContent = DAYS_ID[now.getDay()];
-    document.getElementById('clock-date-full').textContent = now.getDate() + ' ' + MONTHS_ID[now.getMonth()] + ' ' + now.getFullYear();
-
-    const hj = getHijri(now);
-    document.getElementById('clock-hijri').textContent = hj.d + ' ' + HIJRI_MONTHS[hj.m] + ' ' + hj.y + ' H';
-    document.getElementById('hero-date').textContent = DAYS_ID[now.getDay()] + ', ' + now.getDate() + ' ' + MONTHS_ID[now.getMonth()] + ' ' + now.getFullYear();
-    document.getElementById('sholat-hari').textContent = DAYS_ID[now.getDay()];
-    document.getElementById('sholat-tanggal').textContent = now.getDate() + ' ' + MONTHS_ID[now.getMonth()] + ' ' + now.getFullYear() + ' / ' + hj.d + ' ' + HIJRI_MONTHS[hj.m] + ' ' + hj.y + ' H';
-
-    let nextIdx = -1, minDiff = Infinity;
-    PRAYERS.forEach((p, i) => {
-      const pm = toMins(p.h, p.m);
-      const diff = pm - nowMins;
-      if (diff > 0 && diff < minDiff) { minDiff = diff; nextIdx = i; }
-    });
-    if (nextIdx === -1) { nextIdx = 0; minDiff = toMins(PRAYERS[0].h, PRAYERS[0].m) + (1440 - nowMins); }
-
-    const grid = document.getElementById('prayer-grid');
-    grid.innerHTML = PRAYERS.map((p, i) => {
-      const isActive = i === nextIdx;
-      return `<div class="prayer-item ${isActive ? 'active' : ''}">
-        <div class="prayer-icon"><i class="ti ${p.icon}" aria-hidden="true"></i></div>
-        <div class="prayer-name">${p.name}</div>
-        <div class="prayer-time">${fmt(p.h, p.m)}</div>
-      </div>`;
-    }).join('');
-
-    const full = document.getElementById('full-prayer-list');
-    full.innerHTML = PRAYERS.map((p, i) => {
-      const isActive = i === nextIdx;
-      return `<div style="display:flex; align-items:center; gap:12px; padding:12px 16px; ${isActive ? 'background:#f0faf4;' : ''} border-bottom: 0.5px solid var(--border-soft);">
-        <i class="ti ${p.icon}" style="font-size:20px; color:${isActive ? 'var(--green-dark)' : 'var(--text-muted)'};" aria-hidden="true"></i>
-        <div style="flex:1;">
-          <div style="font-size:14px; font-weight:${isActive ? 700 : 500}; color:${isActive ? 'var(--green-dark)' : 'var(--text-main)'};">${p.name}</div>
-        </div>
-        ${isActive ? '<div style="background:var(--green-dark); color:#fff; font-size:10px; font-weight:700; padding:3px 10px; border-radius:20px; margin-right:8px;">Berikutnya</div>' : ''}
-        <div style="font-size:16px; font-weight:700; color:${isActive ? 'var(--green-dark)' : 'var(--text-main)'};">${fmt(p.h, p.m)}</div>
-      </div>`;
-    }).join('');
-
-    document.getElementById('next-name').textContent = PRAYERS[nextIdx].name;
-    const hrs = Math.floor(minDiff / 60), mins = minDiff % 60;
-    document.getElementById('next-countdown').textContent = hrs > 0 ? hrs + 'j ' + mins + 'm' : mins + ' mnt';
-  }
-
-  function goPage(id, btn) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    btn.classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
-  function switchVM(tab) {
-    document.querySelectorAll('.vm-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.vm-tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('vm-' + tab).classList.add('active');
-    event.target.classList.add('active');
-  }
-
-  function openMaps() {
-    window.open('https://maps.app.goo.gl/m4sf43JFKfCm56NU7', '_blank');
-  }
-
-  updateClock();
-  setInterval(updateClock, 1000);
-</script>
+</html>
