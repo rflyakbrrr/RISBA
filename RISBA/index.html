@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="RISBA - Aplikasi Islami: Jadwal Sholat, Arah Kiblat, dan Peta Masjid" />
+  <meta name="theme-color" content="#1a6b3c" />
+  <title>RISBA - Aplikasi Islami</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/animation.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header id="main-header">
+      <div class="container">
+        <div class="header-brand">
+          <img src="images/logo.png" alt="RISBA Logo" class="logo" />
+          <h1 class="brand-name">RISBA</h1>
+        </div>
+        <nav id="main-nav">
+          <button class="nav-btn active" data-tab="beranda">Beranda</button>
+          <button class="nav-btn" data-tab="sholat">Sholat</button>
+          <button class="nav-btn" data-tab="qiblat">Kiblat</button>
+          <button class="nav-btn" data-tab="peta">Peta</button>
+        </nav>
+        <button id="menu-toggle" aria-label="Toggle Menu">&#9776;</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <!-- Beranda Tab -->
+      <section id="tab-beranda" class="tab-section active">
+        <div class="hero" style="background-image: url('images/banner.jpg')">
+          <div class="hero-overlay">
+            <h2 class="hero-title">Bismillahirrahmanirrahim</h2>
+            <p class="hero-subtitle">Selamat Datang di RISBA</p>
+          </div>
+        </div>
+        <div class="container">
+          <div class="card-grid">
+            <div class="card" data-tab="sholat">
+              <div class="card-icon">🕌</div>
+              <h3>Jadwal Sholat</h3>
+              <p>Waktu sholat akurat berdasarkan lokasi Anda</p>
+            </div>
+            <div class="card" data-tab="qiblat">
+              <div class="card-icon">🧭</div>
+              <h3>Arah Kiblat</h3>
+              <p>Temukan arah kiblat dengan kompas digital</p>
+            </div>
+            <div class="card" data-tab="peta">
+              <div class="card-icon">🗺️</div>
+              <h3>Peta Masjid</h3>
+              <p>Cari masjid terdekat di sekitar Anda</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sholat Tab -->
+      <section id="tab-sholat" class="tab-section">
+        <div class="container">
+          <h2 class="section-title">Jadwal Waktu Sholat</h2>
+          <div id="sholat-container">
+            <div id="location-info" class="info-box">
+              <span id="location-text">Mendeteksi lokasi...</span>
+            </div>
+            <div id="prayer-times" class="prayer-grid">
+              <!-- Diisi oleh sholat.js -->
+            </div>
+            <div id="next-prayer" class="next-prayer-box">
+              <!-- Waktu sholat berikutnya -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Qiblat Tab -->
+      <section id="tab-qiblat" class="tab-section">
+        <div class="container">
+          <h2 class="section-title">Arah Kiblat</h2>
+          <div id="qiblat-container">
+            <div id="compass-wrapper">
+              <div id="compass-rose"></div>
+              <div id="qiblat-arrow"></div>
+            </div>
+            <div id="qiblat-info" class="info-box">
+              <p id="qiblat-degree">Memuat arah kiblat...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Peta Tab -->
+      <section id="tab-peta" class="tab-section">
+        <div class="container">
+          <h2 class="section-title">Peta Masjid Terdekat</h2>
+          <div id="maps-container">
+            <div id="map" style="height: 400px; width: 100%; border-radius: 12px;"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer">
+      <div class="container">
+        <p>&copy; 2024 RISBA - Rumah Ibadah &amp; Sosial Baiturrahim. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Audio Player -->
+    <div id="audio-player" class="hidden">
+      <audio id="adzan-audio" src="assets/audio/adzan.mp3" preload="none"></audio>
+      <audio id="murattal-audio" src="assets/audio/murattal.mp3" preload="none"></audio>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/sholat.js"></script>
+  <script src="js/qiblat.js"></script>
+  <script src="js/maps.js"></script>
+  <script src="js/pwa.js"></script>
+</body>
+</html>

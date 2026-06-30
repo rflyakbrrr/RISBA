@@ -1,0 +1,240 @@
+/* ======================================================
+   RISBA - animation.css
+   Keyframes, Transitions & Micro-Animations
+   ====================================================== */
+
+/* --- Fade Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Scale Animations --- */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes scalePulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* --- Glow / Shimmer --- */
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 10px rgba(39, 160, 90, 0.3); }
+  50%  { box-shadow: 0 0 35px rgba(39, 160, 90, 0.7); }
+  100% { box-shadow: 0 0 10px rgba(39, 160, 90, 0.3); }
+}
+
+@keyframes goldGlow {
+  0%   { box-shadow: 0 0 10px rgba(240, 192, 64, 0.3); }
+  50%  { box-shadow: 0 0 30px rgba(240, 192, 64, 0.7); }
+  100% { box-shadow: 0 0 10px rgba(240, 192, 64, 0.3); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* --- Spin & Rotate --- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes compassNeedle {
+  0%   { transform: translate(-50%, -100%) rotate(-5deg); }
+  50%  { transform: translate(-50%, -100%) rotate(5deg); }
+  100% { transform: translate(-50%, -100%) rotate(-5deg); }
+}
+
+/* --- Bounce --- */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  30%       { transform: translateY(-12px); }
+  60%       { transform: translateY(-4px); }
+}
+
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.1); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.1); }
+  70%  { transform: scale(1); }
+}
+
+/* --- Progress / Loading --- */
+@keyframes progressBar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+
+@keyframes skeleton {
+  0%   { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 1; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* --- Slide Animations --- */
+@keyframes slideInLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInBottom {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* ==========================================
+   Utility Animation Classes
+   ========================================== */
+
+.anim-fadeIn          { animation: fadeIn 0.4s ease forwards; }
+.anim-fadeInUp        { animation: fadeInUp 0.5s ease forwards; }
+.anim-fadeInDown      { animation: fadeInDown 0.4s ease forwards; }
+.anim-fadeInLeft      { animation: fadeInLeft 0.5s ease forwards; }
+.anim-fadeInRight     { animation: fadeInRight 0.5s ease forwards; }
+.anim-scaleIn         { animation: scaleIn 0.35s ease forwards; }
+.anim-slideInLeft     { animation: slideInLeft 0.4s ease forwards; }
+.anim-slideInRight    { animation: slideInRight 0.4s ease forwards; }
+.anim-slideInBottom   { animation: slideInBottom 0.4s ease forwards; }
+
+/* Continuous */
+.anim-spin            { animation: spin 1s linear infinite; }
+.anim-pulse           { animation: scalePulse 2s ease-in-out infinite; }
+.anim-glow            { animation: glowPulse 2.5s ease-in-out infinite; }
+.anim-gold-glow       { animation: goldGlow 2.5s ease-in-out infinite; }
+.anim-bounce          { animation: bounce 1s ease infinite; }
+.anim-heartbeat       { animation: heartbeat 1.5s ease-in-out infinite; }
+.anim-compass-needle  { animation: compassNeedle 3s ease-in-out infinite; }
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg,
+    var(--color-surface) 25%,
+    var(--color-surface-2) 50%,
+    var(--color-surface) 75%
+  );
+  background-size: 400px 100%;
+  animation: skeleton 1.4s ease-in-out infinite;
+  border-radius: var(--radius-md);
+  color: transparent !important;
+  user-select: none;
+}
+
+/* Delay Utilities */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+
+/* ==========================================
+   Component-Specific Animations
+   ========================================== */
+
+/* Card Hover */
+.card {
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Nav Button */
+.nav-btn {
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* Active Prayer Card Pulse */
+.prayer-card.active-prayer {
+  animation: goldGlow 2.5s ease-in-out infinite;
+}
+
+/* Hero Title entrance */
+.hero-title {
+  animation: fadeInDown 0.8s ease 0.2s backwards;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 0.8s ease 0.4s backwards;
+}
+
+/* Tab Section entrance */
+.tab-section.active {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Section title underline grow */
+.section-title::after {
+  animation: progressBar 0.6s ease 0.2s backwards;
+}
+
+/* Compass arrow wobble on load */
+#qiblat-arrow {
+  transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Ripple Effect */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ripple::after {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+}
+
+.btn-ripple:active::after {
+  animation: ripple 0.5s ease;
+}
+
+/* Notification badge bounce */
+.notification-badge {
+  animation: bounce 1s ease infinite;
+}

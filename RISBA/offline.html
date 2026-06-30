@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RISBA — Offline</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0a1f10;
+      color: #e8f5e9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background-image:
+        radial-gradient(ellipse at 30% 30%, rgba(26,107,60,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 70%, rgba(240,192,64,0.05) 0%, transparent 60%);
+    }
+
+    .container {
+      text-align: center;
+      max-width: 480px;
+    }
+
+    .icon {
+      font-size: 5rem;
+      margin-bottom: 24px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #f0c040;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #a5c9aa;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(135deg, #c79d1a, #f0c040);
+      border-radius: 999px;
+      margin: 24px auto;
+    }
+
+    .cached-features {
+      background: #112a18;
+      border: 1px solid rgba(39,160,90,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .cached-features h3 {
+      color: #f0c040;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      color: #a5c9aa;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(39,160,90,0.1);
+    }
+
+    .feature-item:last-child { border-bottom: none; }
+
+    .btn-retry {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #1a6b3c, #27a05a);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 20px rgba(39,160,90,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-retry:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 30px rgba(39,160,90,0.5);
+    }
+
+    .brand {
+      font-size: 0.8rem;
+      color: #6b9470;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">📡</div>
+
+    <h1>Tidak Ada Koneksi</h1>
+    <p>Anda sedang offline. RISBA memerlukan koneksi internet untuk memuat data terbaru.</p>
+
+    <div class="divider"></div>
+
+    <div class="cached-features">
+      <h3>✅ Tersedia Offline</h3>
+      <div class="feature-item"><span>🕌</span> Jadwal waktu sholat (dari cache)</div>
+      <div class="feature-item"><span>🧭</span> Arah kiblat (tanpa GPS)</div>
+      <div class="feature-item"><span>📖</span> Konten yang pernah dibuka</div>
+    </div>
+
+    <button class="btn-retry" onclick="window.location.reload()">
+      🔄 Coba Lagi
+    </button>
+
+    <button class="btn-retry" style="background:transparent;border:1px solid rgba(39,160,90,0.5);margin-left:12px;"
+            onclick="window.location.href='index.html'">
+      🏠 Beranda
+    </button>
+
+    <p class="brand">RISBA — Rumah Ibadah &amp; Sosial Baiturrahim</p>
+  </div>
+</body>
+</html>
